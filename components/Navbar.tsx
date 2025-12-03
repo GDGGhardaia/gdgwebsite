@@ -1,64 +1,69 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const navLinks = [
-  { name: "Home", href: "/" },
-  { name: "Events", href: "/events" },
-  { name: "Members", href: "/members" },
-  { name: "About", href: "/about" },
+  { href: "/", label: "Home", active: true },
+  { href: "/events", label: "Events" },
+  { href: "/members", label: "Members" },
+  { href: "/about", label: "About" },
 ];
 
-export function Navbar() {
+export default function Navbar() {
   return (
-    <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
-      <nav className="flex items-center justify-between w-full max-w-5xl px-6 py-3 bg-white/80 backdrop-blur-md border border-gray-200/50 rounded-full shadow-sm">
+    // changed to fixed, centered, and given a max-width to look like a floating pill
+    <header className="fixed top-6 left-0 right-0 z-50 mx-auto w-[95%] max-w-5xl px-4 md:px-0">
+      <div className="flex items-center justify-between rounded-full bg-white/90 px-6 py-3 shadow-md backdrop-blur-md border border-gray-100 transition-all">
+        
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <Image
-            src="/images/navbar-logo.png"
-            alt="GDG Ghardaia Logo"
-            width={140}
+          {/* Ensure your logo image is cropped tightly or use height auto */}
+          <Image 
+            src="/images/navbar-logo.png" 
+            alt="GDG Ghardaia" 
+            width={120} 
             height={40}
-            className="h-8 w-auto object-contain"
-            priority
+            className="h-8 w-auto object-contain" // Keeps logo size controlled inside the pill
           />
         </Link>
 
-        {/* Links */}
-        <div className="hidden md:flex items-center gap-8">
+        {/* Navigation - Centered */}
+        <nav className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
             <Link
-              key={link.name}
+              key={link.href}
               href={link.href}
-              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+              className={cn(
+                "text-sm font-medium transition-colors hover:text-[#4285F4]",
+                link.active ? "text-gray-900 font-semibold" : "text-gray-500"
+              )}
             >
-              {link.name}
+              {link.label}
             </Link>
           ))}
-        </div>
+        </nav>
 
-        {/* Actions */}
-        <div className="flex items-center gap-4">
+        {/* Actions (Join + Theme) */}
+        <div className="flex items-center gap-3">
+          <button
+            className="flex h-9 w-9 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
+            aria-label="Toggle theme"
+          >
+            <Moon className="h-5 w-5" />
+          </button>
+          
           <Link
             href="/join"
-            className="bg-[#1a73e8] hover:bg-[#1557b0] text-white text-sm font-medium px-6 py-2 rounded-full transition-colors"
+            className="rounded-full bg-[#4285F4] px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-[#3367D6] shadow-sm"
           >
             Join
           </Link>
         </div>
-      </nav>
 
-      {/* Dark Mode Toggle - Positioned outside/next to the navbar based on design */}
-      <button
-        className="hidden lg:flex absolute right-[max(2rem,calc(50%-40rem))] top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-colors shadow-md"
-        aria-label="Toggle theme"
-      >
-        <Moon size={20} />
-      </button>
-    </div>
+      </div>
+    </header>
   );
 }

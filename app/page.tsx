@@ -1,11 +1,13 @@
-import { Navbar } from "@/components/Navbar";
-import { Hero } from "@/components/Hero";
+import Hero from "@/components/Hero";
+import Divider from "@/components/Divider";
+import Sponsors from "@/components/Sponsors";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between bg-white">
-      <Navbar />
+    <>
       <Hero />
-    </main>
+      <Divider />
+      <Sponsors />
+    </>
   );
 }
