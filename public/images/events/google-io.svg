@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" fill="none">
+  <rect width="400" height="240" fill="white"/>
+  <!-- Colorful 3D-style "IO" shapes -->
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4285F4"/>
+      <stop offset="100%" style="stop-color:#7C3AED"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#EA4335"/>
+      <stop offset="100%" style="stop-color:#FBBC04"/>
+    </linearGradient>
+    <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34A853"/>
+      <stop offset="100%" style="stop-color:#4285F4"/>
+    </linearGradient>
+    <linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FBBC04"/>
+      <stop offset="100%" style="stop-color:#EA4335"/>
+    </linearGradient>
+  </defs>
+  <!-- Abstract IO shapes -->
+  <rect x="80" y="50" width="60" height="140" rx="30" fill="url(#g1)" transform="rotate(-10 110 120)"/>
+  <circle cx="200" cy="120" r="50" fill="url(#g2)"/>
+  <circle cx="200" cy="120" r="28" fill="white"/>
+  <!-- Decorative elements -->
+  <rect x="270" y="60" width="50" height="50" rx="10" fill="url(#g3)" transform="rotate(15 295 85)"/>
+  <polygon points="320,150 345,110 370,150" fill="url(#g4)"/>
+  <!-- "2025" text -->
+  <text x="200" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#666">2025</text>
+</svg>

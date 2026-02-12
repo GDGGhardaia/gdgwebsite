@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, LayoutGroup } from "framer-motion";
 
 const members = [
   {
@@ -10,62 +11,173 @@ const members = [
     name: "SLIMANE",
     lastName: "DEMKAOUNI",
     role: "Vice President",
-    image: "https://placehold.co/200x200/4285F4/ffffff?text=SD",
-    borderColors: ["#FBBC04", "#EA4335"], // yellow to red
+    image: "/images/members/image copy.png",
+    borderColors: ["#FBBC04", "#EA4335"],
   },
   {
     id: 2,
     name: "Abderrahmane",
     lastName: "SAOUDI",
     role: "Club President",
-    image: "https://placehold.co/200x200/7C3AED/ffffff?text=AS",
-    borderColors: ["#4285F4", "#7C3AED"], // blue to purple
+    image: "/images/members/image.png",
+    borderColors: ["#4285F4", "#7C3AED"],
   },
   {
     id: 3,
     name: "Brahim",
     lastName: "NACER",
     role: "External Relations Team Member",
-    image: "https://placehold.co/200x200/34A853/ffffff?text=BN",
-    borderColors: ["#34A853", "#4285F4"], // green to blue
-  },
-  {
-    id: 4,
-    name: "Ahmed",
-    lastName: "BENALI",
-    role: "Technical Lead",
-    image: "https://placehold.co/200x200/EA4335/ffffff?text=AB",
-    borderColors: ["#EA4335", "#FBBC04"],
-  },
-  {
-    id: 5,
-    name: "Sara",
-    lastName: "KHELIFI",
-    role: "Marketing Lead",
-    image: "https://placehold.co/200x200/FBBC04/333333?text=SK",
-    borderColors: ["#7C3AED", "#EA4335"],
+    image: "/images/members/image copy 2.png",
+    borderColors: ["#34A853", "#4285F4"],
   },
 ];
+
+const cardTransition = {
+  layout: {
+    type: "spring" as const,
+    stiffness: 250,
+    damping: 28,
+    mass: 0.9,
+  },
+};
+
+const slotConfig = {
+  left: {
+    xOffset: -180,
+    scale: 0.78,
+    opacity: 0.65,
+    zIndex: 1,
+    cardWidth: 160,
+    imageSize: 64,
+  },
+  center: {
+    xOffset: 0,
+    scale: 1,
+    opacity: 1,
+    zIndex: 10,
+    cardWidth: 210,
+    imageSize: 96,
+  },
+  right: {
+    xOffset: 180,
+    scale: 0.78,
+    opacity: 0.65,
+    zIndex: 1,
+    cardWidth: 160,
+    imageSize: 64,
+  },
+};
+
+type SlotKey = keyof typeof slotConfig;
+
+function MemberCard({
+  member,
+  slot,
+}: {
+  member: (typeof members)[0];
+  slot: SlotKey;
+}) {
+  const config = slotConfig[slot];
+  const isCenter = slot === "center";
+
+  return (
+    <motion.div
+      layoutId={`member-card-${member.id}`}
+      className="absolute"
+      style={{
+        zIndex: config.zIndex,
+        originY: 1,
+        left: "50%",
+        bottom: 0,
+        marginLeft: -(config.cardWidth / 2),
+      }}
+      animate={{
+        x: config.xOffset,
+        scale: config.scale,
+        opacity: config.opacity,
+      }}
+      transition={cardTransition}
+    >
+      <motion.div
+        className="relative rounded-2xl shadow-lg overflow-visible"
+        style={{
+          background: `linear-gradient(135deg, ${member.borderColors[0]} 0%, ${member.borderColors[1]} 100%)`,
+          padding: "3px",
+          width: config.cardWidth,
+        }}
+        layout
+        transition={cardTransition}
+      >
+        <div className="bg-white rounded-2xl p-4 sm:p-6 flex flex-col items-center">
+          <motion.div
+            className="relative rounded-full overflow-hidden border-4 border-white shadow-lg -mt-10 sm:-mt-14"
+            style={{
+              background: `linear-gradient(135deg, ${member.borderColors[0]} 0%, ${member.borderColors[1]} 100%)`,
+              padding: "3px",
+              width: config.imageSize,
+              height: config.imageSize,
+            }}
+            layout
+            transition={cardTransition}
+          >
+            <div className="w-full h-full rounded-full overflow-hidden">
+              <Image
+                src={member.image}
+                alt={`${member.name} ${member.lastName}`}
+                width={100}
+                height={100}
+                className="w-full h-full object-cover"
+                unoptimized
+              />
+            </div>
+          </motion.div>
+
+          <motion.div className="mt-3 sm:mt-4 text-center" layout transition={cardTransition}>
+            <h3
+              className={`font-bold text-gray-800 leading-tight ${isCenter ? "text-base sm:text-lg" : "text-xs sm:text-sm"
+                }`}
+            >
+              {member.name}
+            </h3>
+            <h3
+              className={`font-bold text-gray-800 leading-tight ${isCenter ? "text-base sm:text-lg" : "text-xs sm:text-sm"
+                }`}
+            >
+              {member.lastName}
+            </h3>
+            <p
+              className={`mt-1 text-gray-500 ${isCenter ? "text-xs sm:text-sm" : "text-[10px] sm:text-xs"
+                }`}
+            >
+              {member.role}
+            </p>
+          </motion.div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
 
 export default function Members() {
   const [currentIndex, setCurrentIndex] = useState(1);
 
-  const getVisibleMembers = () => {
-    const total = members.length;
-    const prev = (currentIndex - 1 + total) % total;
-    const next = (currentIndex + 1) % total;
-    return [members[prev], members[currentIndex], members[next]];
-  };
+  const total = members.length;
+  const prevIndex = (currentIndex - 1 + total) % total;
+  const nextIndex = (currentIndex + 1) % total;
 
-  const goToPrev = () => {
+  const visibleMembers: { member: (typeof members)[0]; slot: SlotKey }[] = [
+    { member: members[prevIndex], slot: "left" },
+    { member: members[currentIndex], slot: "center" },
+    { member: members[nextIndex], slot: "right" },
+  ];
+
+  const goToPrev = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + members.length) % members.length);
-  };
+  }, []);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % members.length);
-  };
-
-  const visibleMembers = getVisibleMembers();
+  }, []);
 
   return (
     <section className="relative w-full py-16 overflow-hidden">
@@ -80,8 +192,10 @@ export default function Members() {
                 linear-gradient(to bottom, rgba(66, 133, 244, 0.12) 1.5px, transparent 1.5px)
               `,
               backgroundSize: "50px 50px",
-              maskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
-              WebkitMaskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
+              maskImage:
+                "linear-gradient(to bottom, black 80%, transparent 100%)",
+              WebkitMaskImage:
+                "linear-gradient(to bottom, black 80%, transparent 100%)",
             }}
           />
         </div>
@@ -103,101 +217,38 @@ export default function Members() {
             <span className="text-[#34A853]">Members</span>
           </h2>
           <p className="mt-4 text-gray-500 max-w-xl mx-auto">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.
-            Suspendisse lectus tortor, dignissim sit amet.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non
+            risus. Suspendisse lectus tortor, dignissim sit amet.
           </p>
         </div>
 
         {/* Members Carousel */}
-        <div className="relative flex items-center justify-center gap-4 sm:gap-8 py-8">
+        <div className="relative flex items-center justify-center py-0">
           {/* Left Arrow */}
           <button
             onClick={goToPrev}
-            className="absolute left-0 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors border border-gray-200"
+            className="absolute left-0 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors border border-gray-200 cursor-pointer"
             aria-label="Previous member"
           >
             <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
           </button>
 
-          {/* Member Cards */}
-          <div className="flex items-end justify-center gap-4 sm:gap-6 px-12 sm:px-16">
-            {visibleMembers.map((member, idx) => {
-              const isCenter = idx === 1;
-              return (
-                <div
-                  key={member.id}
-                  className={`relative transition-all duration-300 ${
-                    isCenter ? "z-10 scale-100" : "scale-75 opacity-70"
-                  }`}
-                >
-                  {/* Card */}
-                  <div
-                    className={`relative bg-white rounded-2xl shadow-lg overflow-visible ${
-                      isCenter ? "w-44 sm:w-52" : "w-32 sm:w-40"
-                    }`}
-                    style={{
-                      background: `linear-gradient(135deg, ${member.borderColors[0]} 0%, ${member.borderColors[1]} 100%)`,
-                      padding: "3px",
-                    }}
-                  >
-                    <div className="bg-white rounded-2xl p-4 sm:p-6 flex flex-col items-center">
-                      {/* Profile Image - positioned to overlap top */}
-                      <div
-                        className={`relative rounded-full overflow-hidden border-4 border-white shadow-lg -mt-12 sm:-mt-16 ${
-                          isCenter ? "w-20 h-20 sm:w-24 sm:h-24" : "w-14 h-14 sm:w-18 sm:h-18"
-                        }`}
-                        style={{
-                          background: `linear-gradient(135deg, ${member.borderColors[0]} 0%, ${member.borderColors[1]} 100%)`,
-                          padding: "3px",
-                        }}
-                      >
-                        <div className="w-full h-full rounded-full overflow-hidden">
-                          <Image
-                            src={member.image}
-                            alt={`${member.name} ${member.lastName}`}
-                            width={100}
-                            height={100}
-                            className="w-full h-full object-cover"
-                            unoptimized
-                          />
-                        </div>
-                      </div>
-
-                      {/* Name & Role */}
-                      <div className="mt-3 sm:mt-4 text-center">
-                        <h3
-                          className={`font-bold text-gray-800 ${
-                            isCenter ? "text-base sm:text-lg" : "text-xs sm:text-sm"
-                          }`}
-                        >
-                          {member.name}
-                        </h3>
-                        <h3
-                          className={`font-bold text-gray-800 ${
-                            isCenter ? "text-base sm:text-lg" : "text-xs sm:text-sm"
-                          }`}
-                        >
-                          {member.lastName}
-                        </h3>
-                        <p
-                          className={`mt-1 text-gray-500 ${
-                            isCenter ? "text-xs sm:text-sm" : "text-[10px] sm:text-xs"
-                          }`}
-                        >
-                          {member.role}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+          {/* Card stage */}
+          <div
+            className="relative w-full"
+            style={{ maxWidth: 560, height: 200 }}
+          >
+            <LayoutGroup>
+              {visibleMembers.map(({ member, slot }) => (
+                <MemberCard key={member.id} member={member} slot={slot} />
+              ))}
+            </LayoutGroup>
           </div>
 
           {/* Right Arrow */}
           <button
             onClick={goToNext}
-            className="absolute right-0 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors border border-gray-200"
+            className="absolute right-0 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors border border-gray-200 cursor-pointer"
             aria-label="Next member"
           >
             <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
