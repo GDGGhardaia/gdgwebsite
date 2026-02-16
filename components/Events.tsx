@@ -132,28 +132,26 @@ export default function Events() {
     const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
     return (
-        <section className="relative w-full py-20 overflow-hidden" ref={sectionRef}>
+        <section className="relative w-full py-16 overflow-hidden" ref={sectionRef}>
             {/* Grid Background */}
-            <div className="absolute inset-0 mx-auto max-w-7xl">
-                <div className="absolute inset-0 h-full w-full">
+            <div className="absolute inset-0 mx-auto max-w-7xl border border-gray-200 rounded-lg bg-white">
+                <div className="absolute inset-0 h-full w-full rounded-lg">
                     <div
-                        className="absolute inset-0"
+                        className="absolute inset-0 rounded-lg"
                         style={{
                             backgroundImage: `
-                linear-gradient(to right, rgba(251, 188, 4, 0.10) 1.5px, transparent 1.5px),
-                linear-gradient(to bottom, rgba(52, 168, 83, 0.10) 1.5px, transparent 1.5px)
+                linear-gradient(to right, rgba(251, 188, 4, 0.15) 1.5px, transparent 1.5px),
+                linear-gradient(to bottom, rgba(52, 168, 83, 0.15) 1.5px, transparent 1.5px)
               `,
                             backgroundSize: "50px 50px",
-                            maskImage:
-                                "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
-                            WebkitMaskImage:
-                                "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+                            maskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
+                            WebkitMaskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
                         }}
                     />
                 </div>
             </div>
 
-            <div className="relative z-10 mx-auto max-w-6xl px-4">
+            <div className="relative z-10 mx-auto max-w-5xl px-4 py-8">
                 {/* Heading */}
                 <motion.div
                     className="text-center mb-14"

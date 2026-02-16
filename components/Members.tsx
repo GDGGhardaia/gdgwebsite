@@ -182,14 +182,14 @@ export default function Members() {
   return (
     <section className="relative w-full py-16 overflow-hidden">
       {/* Grid Background */}
-      <div className="absolute inset-0 mx-auto max-w-7xl border border-gray-200 rounded-lg">
-        <div className="absolute inset-0 h-full w-full">
+      <div className="absolute inset-0 mx-auto max-w-7xl border border-gray-200 rounded-lg bg-white">
+        <div className="absolute inset-0 h-full w-full rounded-lg">
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 rounded-lg"
             style={{
               backgroundImage: `
-                linear-gradient(to right, rgba(234, 67, 53, 0.12) 1.5px, transparent 1.5px),
-                linear-gradient(to bottom, rgba(66, 133, 244, 0.12) 1.5px, transparent 1.5px)
+                linear-gradient(to right, rgba(66, 133, 244, 0.15) 1.5px, transparent 1.5px),
+                linear-gradient(to bottom, rgba(52, 168, 83, 0.12) 1.5px, transparent 1.5px)
               `,
               backgroundSize: "50px 50px",
               maskImage:
@@ -200,7 +200,7 @@ export default function Members() {
           />
         </div>
       </div>
-      <div className="relative z-10 mx-auto max-w-5xl px-4">
+      <div className="relative z-10 mx-auto max-w-5xl px-4 py-8">
         {/* Heading */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold sm:text-5xl lg:text-6xl">

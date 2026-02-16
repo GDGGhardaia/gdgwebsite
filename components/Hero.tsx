@@ -22,21 +22,20 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative w-full overflow-hidden">
+    <section className="relative w-full py-16 overflow-hidden">
       {/* --- GRID BACKGROUND START --- */}
-      <div className="absolute inset-0 mx-auto max-w-7xl border border-gray-200 rounded-lg">
-        <div className="absolute inset-0 h-full w-full">
+      <div className="absolute inset-0 mx-auto max-w-7xl border border-gray-200 rounded-lg bg-white">
+        <div className="absolute inset-0 h-full w-full rounded-lg">
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 rounded-lg"
             style={{
               backgroundImage: `
-                linear-gradient(to right, rgba(66, 133, 244, 0.15) 1.5px, transparent 1.5px),
+                linear-gradient(to right, rgba(234, 67, 53, 0.15) 1.5px, transparent 1.5px),
                 linear-gradient(to bottom, rgba(66, 133, 244, 0.15) 1.5px, transparent 1.5px)
               `,
               backgroundSize: "50px 50px",
-              // Optional: Adds a subtle fade at the bottom so it blends into the next section
               maskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
-              WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
             }}
           />
         </div>
@@ -49,7 +48,7 @@ export default function Hero() {
         <div className="text-center">
           <h1 className="mb-4 text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
             <span className="text-gray-700">GDG</span>{" "}
-            <span className="gradient-text">Ghardaia</span>
+            <span className="text-[#FBBC04]">Ghardaia</span>
           </h1>
 
           {/* Animated Text */}

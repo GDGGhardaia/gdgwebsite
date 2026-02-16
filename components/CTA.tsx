@@ -58,10 +58,28 @@ export default function CTA() {
   return (
     <section
       ref={ref}
-      className="relative w-full py-20 overflow-hidden"
+      className="relative w-full py-16 overflow-hidden"
       id="cta-section"
     >
-      <div className="relative z-10 mx-auto max-w-5xl px-4">
+      {/* Grid Background */}
+      <div className="absolute inset-0 mx-auto max-w-7xl border border-gray-200 rounded-lg bg-white">
+        <div className="absolute inset-0 h-full w-full rounded-lg">
+          <div
+            className="absolute inset-0 rounded-lg"
+            style={{
+              backgroundImage: `
+                linear-gradient(to right, rgba(66, 133, 244, 0.15) 1.5px, transparent 1.5px),
+                linear-gradient(to bottom, rgba(52, 168, 83, 0.12) 1.5px, transparent 1.5px)
+              `,
+              backgroundSize: "50px 50px",
+              maskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-5xl px-4 py-12">
         {/* Main CTA Container */}
         <motion.div
           className="flex items-center justify-center gap-4 sm:gap-8"
@@ -100,9 +118,8 @@ export default function CTA() {
                   x2="30"
                   y2="170"
                 >
-                  <stop offset="0%" stopColor="#4285F4" />
-                  <stop offset="50%" stopColor="#34A853" />
-                  <stop offset="100%" stopColor="#4285F4" />
+                  <stop offset="0%" stopColor="#34A853" />
+                  <stop offset="100%" stopColor="#34A853" />
                 </linearGradient>
               </defs>
             </svg>
@@ -121,16 +138,13 @@ export default function CTA() {
             >
               Follow Google Developer
               <br />
-              group Ghardaia
+              <span className="underline decoration-[3px] decoration-gray-400 underline-offset-8">
+                group Ghardaia
+              </span>
             </motion.h2>
 
-            {/* Divider line */}
-            <motion.div
-              className="w-48 sm:w-64 h-[3px] bg-gray-800 mt-5 mb-6 rounded-full"
-              initial={{ scaleX: 0 }}
-              animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-            />
+            {/* Divider line removed as per image (underline used instead) */}
+            <div className="h-8" />
 
             {/* Social Icons */}
             <motion.div
@@ -213,9 +227,8 @@ export default function CTA() {
                   x2="30"
                   y2="170"
                 >
-                  <stop offset="0%" stopColor="#34A853" />
-                  <stop offset="50%" stopColor="#4285F4" />
-                  <stop offset="100%" stopColor="#34A853" />
+                  <stop offset="0%" stopColor="#4285F4" />
+                  <stop offset="100%" stopColor="#4285F4" />
                 </linearGradient>
               </defs>
             </svg>

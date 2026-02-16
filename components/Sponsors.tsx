@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { motion } from "framer-motion";
 import "./sponsors.css";
 
 const sponsors = [
@@ -18,14 +21,14 @@ export default function Sponsors() {
   return (
     <section className="relative w-full py-16 overflow-hidden">
       {/* Grid Background */}
-      <div className="absolute inset-0 mx-auto max-w-7xl border border-gray-200 rounded-lg bg-[#FFF]">
-        <div className="absolute inset-0 h-full w-full">
+      <div className="absolute inset-0 mx-auto max-w-7xl border border-gray-200 rounded-lg bg-white">
+        <div className="absolute inset-0 h-full w-full rounded-lg">
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 rounded-lg"
             style={{
               backgroundImage: `
-                linear-gradient(to right, rgba(234, 67, 53, 0.12) 1.5px, transparent 1.5px),
-                linear-gradient(to bottom, rgba(66, 133, 244, 0.12) 1.5px, transparent 1.5px)
+                linear-gradient(to right, rgba(234, 67, 53, 0.15) 1.5px, transparent 1.5px),
+                linear-gradient(to bottom, rgba(66, 133, 244, 0.15) 1.5px, transparent 1.5px)
               `,
               backgroundSize: "50px 50px",
               maskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
@@ -35,7 +38,7 @@ export default function Sponsors() {
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto max-w-5xl px-4">
+      <div className="relative z-10 mx-auto max-w-5xl px-4 py-8">
         {/* Heading */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold sm:text-5xl lg:text-6xl">
@@ -49,23 +52,20 @@ export default function Sponsors() {
           </p>
         </div>
 
-        {/* Half Circle Visible Container */}
-        <div className="relative h-[280px] overflow-hidden">
-          {/* The spinning circle - CSS animated */}
-          <div className="sponsors-circle">
-            {/* Circle arc path (decorative) */}
-            <svg className="sponsors-svg" viewBox="0 0 500 500">
-              <circle
-                cx="250"
-                cy="250"
-                r="220"
+        {/* Rotating Sponsors Container - Clipped to top half */}
+        <div className="relative h-[310px] overflow-hidden -mt-10">
+          <div className="absolute left-1/2 top-[50px] -translate-x-1/2 w-[500px] h-[500px]">
+            {/* Static Background Arc */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
+              <path
+                d="M 30,250 A 220,220 0 0 1 470,250"
                 fill="none"
                 stroke="url(#circleGradient)"
                 strokeWidth="2"
                 opacity="0.4"
               />
               <defs>
-                <linearGradient id="circleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <linearGradient id="circleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="#EA4335" />
                   <stop offset="25%" stopColor="#FBBC04" />
                   <stop offset="50%" stopColor="#34A853" />
@@ -75,38 +75,53 @@ export default function Sponsors() {
               </defs>
             </svg>
 
-            {/* Sponsor items positioned with CSS custom properties */}
-            {sponsors.map((sponsor, index) => {
-              const angleStep = 360 / sponsors.length;
-              const baseAngle = 0 + index * angleStep;
-              // const baseAngle = -90 + index * angleStep;
-              const borderColor = borderColors[index % borderColors.length];
+            {/* Rotating Sponsors */}
+            <motion.div
+              className="absolute inset-0 w-full h-full"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+            >
+              {sponsors.map((sponsor, index) => {
+                const angleStep = 360 / sponsors.length;
+                const angle = index * angleStep;
+                const radius = 220;
 
-              return (
-                <div
-                  key={sponsor.id}
-                  className="sponsor-item"
-                  style={{ "--angle": `${baseAngle}deg` } as React.CSSProperties}
-                >
-                  <div className="sponsor-content">
-                    {/* Sponsor circle */}
-                    <div
-                      className="sponsor-logo-wrapper"
-                      style={{ borderColor: borderColor }}
+                return (
+                  <div
+                    key={sponsor.id}
+                    className="absolute top-1/2 left-1/2 w-0 h-0 flex items-center justify-center"
+                    style={{
+                      transform: `rotate(${angle}deg) translate(${radius}px)`,
+                    }}
+                  >
+                    {/* Counter-rotation to keep upright */}
+                    <motion.div
+                      animate={{ rotate: -360 }}
+                      transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                      className="relative flex items-center justify-center"
                     >
-                      <Image
-                        src={sponsor.logo}
-                        alt={sponsor.name}
-                        width={70}
-                        height={35}
-                        className="object-contain p-1 rounded-full"
-                        unoptimized
-                      />
-                    </div>
+                      <div
+                         // Static counter-rotation to cancel the placement angle
+                        className="sponsor-logo-wrapper"
+                        style={{
+                          borderColor: borderColors[index % borderColors.length],
+                          transform: `rotate(-${angle}deg)`, 
+                        }}
+                      >
+                        <Image
+                          src={sponsor.logo}
+                          alt={sponsor.name}
+                          width={60}
+                          height={30}
+                          className="object-contain p-1 rounded-full"
+                          unoptimized
+                        />
+                      </div>
+                    </motion.div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </motion.div>
           </div>
         </div>
 
