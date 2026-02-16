@@ -200,15 +200,6 @@ export default function Members() {
           />
         </div>
       </div>
-
-      {/* Top colored line */}
-      <div className="absolute top-0 left-0 right-0 h-1 flex">
-        <div className="flex-1 bg-[#EA4335]" />
-        <div className="flex-1 bg-[#FBBC04]" />
-        <div className="flex-1 bg-[#34A853]" />
-        <div className="flex-1 bg-[#4285F4]" />
-      </div>
-
       <div className="relative z-10 mx-auto max-w-5xl px-4">
         {/* Heading */}
         <div className="text-center mb-12">
@@ -255,10 +246,6 @@ export default function Members() {
           </button>
         </div>
       </div>
-
-      {/* Bottom colored corners */}
-      <div className="absolute bottom-0 left-0 w-24 h-1 bg-[#FBBC04]" />
-      <div className="absolute bottom-0 right-0 w-24 h-1 bg-[#34A853]" />
     </section>
   );
 }
