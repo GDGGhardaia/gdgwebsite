@@ -1,18 +1,21 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 const navLinks = [
-  { href: "/", label: "Home", active: true },
+  { href: "/", label: "Home" },
   { href: "/events", label: "Events" },
   { href: "/members", label: "Members" },
   { href: "/about", label: "About" },
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
+
   return (
     // changed to fixed, centered, and given a max-width to look like a floating pill
     <header className="fixed top-6 left-0 right-0 z-50 mx-auto w-[95%] max-w-5xl px-4 md:px-0">
@@ -38,7 +41,7 @@ export default function Navbar() {
               href={link.href}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-[#4285F4]",
-                link.active ? "text-gray-900 font-semibold" : "text-gray-500"
+                pathname === link.href ? "text-gray-900 font-semibold" : "text-gray-500"
               )}
             >
               {link.label}
